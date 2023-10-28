@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Publication_date</th>
+            <th>Published</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Action</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.publicationDate|date('Y-m-d H:i:s')}}</td>
+                <td>{{ book.published|default(0) ? 'true' : 'false' }}</td>
+                <td>{{ book.category }}</td>
+                <td>{{ book.author.username }}</td>
+                <td><a href="{{ path('app_book_edit', {'id':book.id}) }}">edit</a>&nbsp;&nbsp;
+                    <a href="{{ path('app_book_remove', {'id': book.id}) }}">delete</a>&nbsp;&nbsp;
+                    <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <br>
+    <h3>Nbr of published books : {{ nbr_published_books }}</h3>
+    <h3>Nbr of unpublished books : {{ nbr_unpublished_books }}</h3>
+    <button><a href="{{ path('app_book_add') }}">Add Book</a></button>
+</div>
+{% endblock %}
