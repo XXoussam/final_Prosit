@@ -9,6 +9,13 @@
 </style>
 
 <div class="example-wrapper">
+        <form action="{{ path('app_author_listByNbBook') }}" method="post">
+                <label for="min">min</label>
+                <input type="number" name="min" id="min">
+                <label for="max">max</label>
+                <input type="number" name="max" id="max">
+                <input type="submit" value="Search">
+        </form>
         <table border="1">
                 <tr>
                         <th>Username</th>
