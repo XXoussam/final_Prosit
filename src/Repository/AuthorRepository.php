@@ -45,4 +45,33 @@ class AuthorRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    public function listAuthorByEmail(): array
+    {
+       //liste des auteurs par ordre alphabétique des adresses email.
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Author a
+            ORDER BY a.email ASC'
+        );
+        return $query->getResult();
+    }
+
+    //rechercher la liste des auteurs dont le nombre de livres est compris entre deux valeurs
+    public function listAuthorByNbBook($min, $max): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Author a
+            WHERE a.nb_books BETWEEN :min AND :max
+            ORDER BY a.nb_books ASC'
+        )->setParameter('min', $min)
+        ->setParameter('max', $max);
+        return $query->getResult();
+    }
+
+
 }

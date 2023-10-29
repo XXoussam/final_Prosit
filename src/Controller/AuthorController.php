@@ -70,4 +70,27 @@ class AuthorController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_all_author');
     }
+
+    #[Route('/listAuthorByEmail', name: 'app_author_listByEmail')]
+    public function listAuthorByEmail(AuthorRepository $authorRepo): Response
+    {
+        $authors = $authorRepo->listAuthorByEmail();
+        return $this->render('author/index.html.twig', [
+            'controller_name' => 'AuthorController',
+            'authors' => $authors
+        ]);
+    }
+
+    //rechercher la liste des auteurs dont le nombre de livres est compris entre deux valeurs
+    #[Route('/listAuthorByNbBook', name: 'app_author_listByNbBook')]
+    public function listAuthorByNbBook(AuthorRepository $authorRepo,Request $request): Response
+    {
+        $min = $request->request->get('min');
+        $max = $request->request->get('max');
+        $authors = $authorRepo->listAuthorByNbBook($min, $max);
+        return $this->render('author/index.html.twig', [
+            'controller_name' => 'AuthorController',
+            'authors' => $authors
+        ]);
+    }
 }

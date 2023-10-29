@@ -9,6 +9,11 @@
 </style>
 
 <div class="example-wrapper">
+    <form method="post" action="{{ path('app_book_byRef') }}">
+        <label for="search">Search</label>
+        <input type="text" name="search" id="search">
+        <input type="submit" value="Search">
+    </form>
 
     <table border="1">
         <tr>
@@ -34,8 +39,11 @@
 
     </table>
     <br>
-    <h3>Nbr of published books : {{ nbr_published_books }}</h3>
-    <h3>Nbr of unpublished books : {{ nbr_unpublished_books }}</h3>
+    {% if nbr_unpublished_books is defined and nbr_published_books is defined %}
+        <h3>Nbr of published books: {{ nbr_published_books }}</h3>
+        <h3>Nbr of unpublished books: {{ nbr_unpublished_books }}</h3>
+    {% endif %}
+
     <button><a href="{{ path('app_book_add') }}">Add Book</a></button>
 </div>
 {% endblock %}

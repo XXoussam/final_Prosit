@@ -111,4 +111,58 @@ class BookController extends AbstractController
             'book' => $book
         ]);
     }
+
+    #[Route('/books/byRef', name: 'app_book_byRef')]
+    public function searchBookByRef(BookRepository $bookRepo,
+                            Request $request): Response
+    {
+        $ref = $request->request->get('search');
+        $book = $bookRepo->searchBookByRef($ref);
+        return $this->render('book/index.html.twig', [
+            'controller_name' => 'BookController',
+            'books' => $book
+        ]);
+    }
+
+    //d’afficher la liste des livres triée par auteur.
+    #[Route('/books/orderByAuthor', name: 'app_book_orderByAuthor')]
+    public function findAllOrderByAuthor(BookRepository $bookRepo): Response
+    {
+        $result = $bookRepo->findAllOrderByAuthor();
+        return $this->render('book/index.html.twig', [
+            'controller_name' => 'BookController',
+            'books' => $result
+        ]);
+    }
+
+    //Afficher la liste des livres publiés avant l’année 2023 dont l’auteur a plus de 10 livres
+    #[Route('/books/publishedBefore2023WithAuthorMoreThan10Books', name: 'app_book_publishedBefore2023WithAuthorMoreThan10Books')]
+    public function findPublishedBooksBefore2023WithAuthorMoreThan10Books(BookRepository $bookRepo): Response
+    {
+        $result = $bookRepo->findBookPublishedBefore2023AndAuthorHasMoreThan10Books();
+        return $this->render('book/index.html.twig', [
+            'controller_name' => 'BookController',
+            'books' => $result
+        ]);
+    }
+
+    //Afficher le nombre des livres dont la catégorie est « Romance ».
+    #[Route('/books/countBooksByCategory', name: 'app_book_countBooksByCategory')]
+    public function countBooksByCategory(BookRepository $bookRepo): Response
+    {
+        $result = $bookRepo->countBooksByCategory('Romance');
+        return new Response("<h3>le nombre des livres dont la catégorie est « Romance » est :
+                            {$result}</h3>");
+    }
+
+    //Afficher la liste des livres publiés entre deux dates « 2014-01-01 » et «2018- 12-31 ».
+    #[Route('/books/publishedBetweenTwoDates', name: 'app_book_publishedBetweenTwoDates')]
+    public function findPublishedBooksBetweenTwoDates(BookRepository $bookRepo): Response
+    {
+        $result = $bookRepo->findBooksPublishedBetweenTwoDates('2014-01-01','2018-12-31');
+        return $this->render('book/index.html.twig', [
+            'controller_name' => 'BookController',
+            'books' => $result
+        ]);
+    }
 }
